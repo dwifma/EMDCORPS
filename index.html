@@ -1,101 +1,238 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>dwifma | Portfolio</title>
+    <title>Portofolio Saya | Minimalist & Elegant</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/3c86e92759.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
     <style>
+        /* --- CSS VARIABLES & RESET --- */
+        :root {
+            --bg-color: #0a0a0a;
+            --text-color: #e0e0e0;
+            --accent-color: #d4af37; /* Emas pudar */
+            --secondary-text: #888888;
+            --transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
-            font-family: "Poppins", sans-serif;
-            background: #ffffff;
-            color: #111;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
             overflow-x: hidden;
         }
 
-        header {
-            padding: 20px 50px;
-            font-size: 26px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            animation: fadeDown 1s ease;
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 400;
         }
 
-        .hero {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1100px;
-            margin: 70px auto;
-            padding: 20px;
-            gap: 50px;
-        }
-
-        .hero img {
-            width: clamp(220px, 30vw, 330px);
-            height: clamp(220px, 30vw, 330px);
-            object-fit: cover;
-            border-radius: 20px;
-            box-shadow: 0 5px 30px rgba(0,0,0,0.18);
-            transform: translateY(20px);
-            opacity: 0;
-            animation: fadeUp 1.4s ease forwards;
-        }
-
-        .content {
-            animation: fadeRight 1.3s ease forwards;
-            opacity: 0;
-        }
-
-        h1 {
-            font-size: 48px;
-            font-weight: 800;
-        }
-
-        p {
-            font-size: 17px;
-            margin: 18px 0;
-            line-height: 1.7;
-            font-weight: 300;
-            max-width: 500px;
-        }
-
-        .social {
-            margin-top: 20px;
-            display: flex;
-            gap: 20px;
-        }
-
-        .social a {
-            font-size: 22px;
-            color: #111;
+        a {
+            text-decoration: none;
+            color: inherit;
             transition: 0.3s;
         }
 
-        .social a:hover {
-            transform: translateY(-4px);
-            color: #007bff;
+        ul {
+            list-style: none;
         }
 
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            mix-blend-mode: difference; /* Efek keren saat scroll di atas gambar */
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .nav-links a {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--text-color);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* --- HERO SECTION --- */
+        header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 10%;
+        }
+
+        .hero-text h1 {
+            font-size: 5rem;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeUp 1s forwards 0.5s;
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            color: var(--secondary-text);
+            max-width: 500px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1s forwards 0.8s;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            opacity: 0.5;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* --- SECTIONS GENERAL --- */
+        section {
+            padding: 8rem 10%;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            margin-bottom: 4rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 1rem;
+            display: inline-block;
+        }
+
+        /* --- WORK / PROJECTS --- */
+        .work-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 4rem;
+        }
+
+        .project-card {
+            cursor: pointer;
+            group: 1;
+        }
+
+        .image-container {
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            background-color: #1a1a1a;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1s ease;
+            filter: grayscale(100%);
+        }
+
+        .project-card:hover .image-container img {
+            transform: scale(1.05);
+            filter: grayscale(0%);
+        }
+
+        .project-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-info p {
+            color: var(--secondary-text);
+            font-size: 0.9rem;
+        }
+
+        /* --- ABOUT --- */
+        .about-content {
+            display: flex;
+            gap: 4rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .about-text {
+            flex: 1;
+            font-size: 1.2rem;
+            color: var(--secondary-text);
+        }
+        
+        .about-text strong {
+            color: var(--text-color);
+            font-weight: 400;
+        }
+
+        /* --- CONTACT --- */
+        .contact-link {
+            font-size: 4rem;
+            font-family: 'Playfair Display', serif;
+            display: block;
+            margin-top: 2rem;
+            color: var(--text-color);
+        }
+
+        .contact-link:hover {
+            color: var(--accent-color);
+            transform: translateX(20px);
+        }
+
+        /* --- FOOTER --- */
         footer {
-            margin-top: 80px;
-            padding: 25px;
-            text-align: center;
-            border-top: 1px solid #eee;
-            font-size: 12px;
-            color: #777;
+            padding: 3rem 10%;
+            border-top: 1px solid #1a1a1a;
+            display: flex;
+            justify-content: space-between;
+            color: var(--secondary-text);
+            font-size: 0.9rem;
         }
 
-        /* Animasi */
+        /* --- ANIMATIONS & UTILITIES --- */
         @keyframes fadeUp {
             to {
                 opacity: 1;
@@ -103,52 +240,141 @@
             }
         }
 
-        @keyframes fadeDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateX(-50%) translateY(0);}
+            40% {transform: translateX(-50%) translateY(-10px);}
+            60% {transform: translateX(-50%) translateY(-5px);}
         }
 
-        @keyframes fadeRight {
-            from { opacity: 0; transform: translateX(-25px); }
-            to { opacity: 1; transform: translateX(0); }
+        /* Class untuk Javascript Scroll Reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: var(--transition);
         }
 
-        @media (max-width: 830px) {
-            .hero {
-                flex-direction: column;
-                text-align: center;
-            }
-            p {
-                margin: 18px auto;
-            }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .hero-text h1 { font-size: 3rem; }
+            .nav-links { display: none; } /* Bisa ditambah hamburger menu nanti */
+            section { padding: 4rem 5%; }
+            .contact-link { font-size: 2rem; }
         }
     </style>
 </head>
-
 <body>
 
-<header>dwifma</header>
+    <nav>
+        <div class="logo">NAMAMU.</div>
+        <ul class="nav-links">
+            <li><a href="#work">Karya</a></li>
+            <li><a href="#about">Tentang</a></li>
+            <li><a href="#contact">Kontak</a></li>
+        </ul>
+    </nav>
 
-<section class="hero">
-    <div class="content">
-        <h1>Hello, I'm Dwi 👋</h1>
-        <p>
-            An Electrical Engineering student passionate about AI, creative media,
-            history of civilization, and content creation.
-            Still amateur in editing but I keep leveling up every single day 💪🔥
-        </p>
-
-        <div class="social">
-            <a href="https://www.instagram.com/dwifma" target="_blank"><i class="fab fa-instagram"></i></a>
-            <a href="https://www.linkedin.com/in/dwifma" target="_blank"><i class="fab fa-linkedin"></i></a>
-            <a href="https://github.com/dwifma" target="_blank"><i class="fab fa-github"></i></a>
+    <header>
+        <div class="hero-text">
+            <h1>Menciptakan<br><i>Pengalaman Digital</i><br>Yang Bermakna.</h1>
+            <p>Seorang desainer & pengembang web yang berbasis di Indonesia, fokus pada kesederhanaan dan detail.</p>
         </div>
-    </div>
+        <div class="scroll-indicator">Scroll Kebawah</div>
+    </header>
 
-    <img src="Gambar WhatsApp 2025-11-28 pukul 08.12.44_3593eabd.jpg" alt="dwifma">
-</section>
+    <section id="work">
+        <h2 class="section-title reveal">Karya Terpilih</h2>
+        
+        <div class="work-grid">
+            <div class="project-card reveal">
+                <div class="image-container">
+                    <img src="https://images.unsplash.com/photo-1481487484168-9b930d5b7d9d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Project 1">
+                </div>
+                <div class="project-info">
+                    <h3>Minimalist Brand</h3>
+                    <p>Web Design / Development</p>
+                </div>
+            </div>
 
-<footer>© 2025 dwifma — Crafted with passion 🙌</footer>
+            <div class="project-card reveal">
+                <div class="image-container">
+                    <img src="https://images.unsplash.com/photo-1545235617-9465d2a55698?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Project 2">
+                </div>
+                <div class="project-info">
+                    <h3>Architecture Folio</h3>
+                    <p>UI/UX Design</p>
+                </div>
+            </div>
 
+             <div class="project-card reveal">
+                <div class="image-container">
+                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Project 3">
+                </div>
+                <div class="project-info">
+                    <h3>E-Commerce App</h3>
+                    <p>Mobile App Design</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about">
+        <h2 class="section-title reveal">Tentang Saya</h2>
+        <div class="about-content reveal">
+            <div class="about-text">
+                <p>
+                    Halo, saya <strong>[Nama Kamu]</strong>. Saya percaya bahwa desain yang baik tidak terlihat. Saya menggabungkan estetika minimalis dengan fungsionalitas yang kuat untuk membantu brand menceritakan kisah mereka.<br><br>
+                    Dengan pengalaman lebih dari 5 tahun di industri kreatif, saya telah bekerja dengan berbagai klien mulai dari startup hingga korporasi besar.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2 class="section-title reveal">Mari Bekerja Sama</h2>
+        <p class="reveal" style="color: #888;">Punya proyek menarik? Kirimkan saya pesan.</p>
+        <a href="mailto:emailmu@contoh.com" class="contact-link reveal">emailmu@contoh.com</a>
+    </section>
+
+    <footer>
+        <div>&copy; 2024 Namamu. All rights reserved.</div>
+        <div>
+            <a href="#">Instagram</a> / <a href="#">LinkedIn</a>
+        </div>
+    </footer>
+
+    <script>
+        // Fungsi untuk mendeteksi saat elemen masuk ke layar (Scroll Reveal)
+        const revealElements = document.querySelectorAll('.reveal');
+
+        const revealOnScroll = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // Animasi hanya berjalan sekali
+                }
+            });
+        }, {
+            threshold: 0.15 // Elemen akan muncul saat 15% terlihat
+        });
+
+        revealElements.forEach(el => {
+            revealOnScroll.observe(el);
+        });
+
+        // Efek smooth scroll untuk link navigasi
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
 </html>
