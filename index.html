@@ -7,258 +7,354 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;400;500&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;400;500;600&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
     
     <script src="https://unpkg.com/feather-icons"></script>
 
     <style>
-        /* --- VARIABEL WARNA --- */
+        /* --- 1. VARIABEL & RESET --- */
         :root {
-            --bg-color: #121214; 
-            --card-bg: #1c1c1f;
-            --text-main: #ECECEC;
-            --text-muted: #9A9A9A;
-            /* Aksen: Muted Bronze */
-            --accent: #C5A880; 
-            --transition: cubic-bezier(0.16, 1, 0.3, 1);
+            --bg-body: #0f0f11;
+            --bg-card: #161618;
+            --text-main: #F2F2F2;
+            --text-muted: #A1A1AA;
+            --accent: #D4B688; /* Warna Bronze/Emas redup yang elegan */
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
 
         body {
-            background-color: var(--bg-color);
+            background-color: var(--bg-body);
             color: var(--text-main);
             font-family: 'DM Sans', sans-serif;
+            line-height: 1.6;
             overflow-x: hidden;
         }
 
         h1, h2, h3, h4 {
             font-family: 'Space Grotesk', sans-serif;
-            font-weight: 700;
+            color: #fff;
             line-height: 1.1;
         }
 
-        a { text-decoration: none; color: inherit; transition: 0.3s; }
-        img { max-width: 100%; display: block; }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        img { width: 100%; height: auto; display: block; }
         
-        /* Container untuk membatasi lebar isi konten */
         .container {
             max-width: 1100px;
             margin: 0 auto;
             padding: 0 2rem;
         }
 
-        /* --- NAVIGATION --- */
+        /* --- 2. NAVIGATION (Glass Effect) --- */
         nav {
-            padding: 2rem 0;
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            padding: 1.5rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            z-index: 1000;
+            background: rgba(15, 15, 17, 0.8); /* Transparan */
+            backdrop-filter: blur(12px); /* Efek kaca buram */
+            border-bottom: 1px solid var(--border-subtle);
         }
 
         .logo {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             font-weight: 700;
-            letter-spacing: -1px;
+            letter-spacing: -0.5px;
         }
         .logo span { color: var(--accent); }
 
-        /* --- HERO SECTION FULL WIDTH --- */
-        .hero-full {
+        .btn-contact {
+            padding: 0.6rem 1.2rem;
+            border: 1px solid var(--border-subtle);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+        .btn-contact:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(212, 182, 136, 0.05);
+        }
+
+        /* --- 3. HERO SECTION (Full Width & Clean) --- */
+        .hero {
             position: relative;
-            width: 100%; /* Lebar penuh layar */
-            min-height: 75vh;
+            width: 100%;
+            height: 100vh; /* Full layar */
             display: flex;
-            align-items: center; /* Teks vertikal tengah */
+            align-items: center;
+            justify-content: center;
+            text-align: center;
             overflow: hidden;
         }
 
-        /* Latar belakang gambar FULL WIDTH */
-        .hero-full::before {
+        .hero::before {
             content: '';
             position: absolute;
-            top: 0; left: 0;
-            width: 100%; 
-            height: 100%;
-            /* Gambar background dari URL Github yang Anda berikan */
-            background-image: url('https://raw.githubusercontent.com/dwifma/EMDCORPS/7c38d68f1f0e9a65d19debb04a62ec65f85bef01/TE.png');
+            inset: 0;
+            /* Menggunakan gambar background Anda */
+            background-image: url('https://raw.githubusercontent.com/dwifma/EMDCORPS/b1a75713218482394877dd9bc35749bf7fad3eda/Desain%20tanpa%20judul.jpg');
             background-size: cover;
             background-position: center;
-            
-            /* Opasitas rendah agar elegan & teks terbaca */
-            opacity: 0.1; 
-            filter: grayscale(100%);
+            opacity: 0.15; /* Opasitas rendah agar teks jelas */
+            filter: grayscale(100%) contrast(1.2);
             z-index: -1;
         }
 
-        .hero-h1 {
-            font-size: 4.5rem;
-            letter-spacing: -2px;
-            margin-bottom: 1rem;
+        .hero-content { z-index: 1; max-width: 800px; padding: 0 2rem; }
+        
+        .badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border-subtle);
+            border-radius: 100px;
+            font-size: 0.85rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .hero-h1 span { color: var(--accent); }
-
-        .hero-subtitle {
+        .hero h1 {
+            font-size: 5rem;
+            letter-spacing: -3px;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to bottom, #fff, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero h1 span {
+            display: block;
             font-size: 1.5rem;
-            color: var(--text-muted);
+            letter-spacing: 5px;
             font-weight: 400;
-            margin-bottom: 0.5rem;
+            color: var(--accent);
+            -webkit-text-fill-color: var(--accent); /* Override gradient */
+            margin-top: 0.5rem;
+            text-transform: uppercase;
         }
 
-        /* --- INTRO SECTION (FOTO ANDA) --- */
-        .intro-section {
-            padding: 6rem 0;
+        /* --- 4. ABOUT SECTION (Refined Layout) --- */
+        .section { padding: 8rem 0; }
+
+        .about-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 0.8fr 1.2fr;
             gap: 5rem;
             align-items: center;
         }
 
-        .photo-frame {
+        /* Frame foto dengan style baru */
+        .image-wrapper {
             position: relative;
-            border-radius: 24px;
-            overflow: hidden;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.6);
+        }
+        .image-wrapper img {
+            border-radius: 12px;
+            filter: grayscale(100%);
+            transition: var(--transition);
+        }
+        .image-wrapper:hover img {
+            filter: grayscale(0%);
+            transform: scale(1.02);
         }
 
-        .photo-frame::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border: 1px solid var(--accent);
-            border-radius: 24px;
-            opacity: 0.3;
-            pointer-events: none;
+        .about-text h2 { font-size: 2.5rem; margin-bottom: 1.5rem; }
+        
+        /* Typography fix untuk teks panjang */
+        .about-text p {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            text-align: justify;
         }
+        
+        .highlight { color: #fff; font-weight: 500; }
 
-        .intro-text h2 { font-size: 2.5rem; margin-bottom: 1.5rem; }
-        .intro-text p { color: var(--text-muted); font-size: 1.1rem; line-height: 1.7; margin-bottom: 1.5rem; }
-
-        /* --- SERVICES --- */
-        .section-header { margin-bottom: 3rem; display: flex; align-items: baseline; gap: 1rem; }
+        /* --- 5. SKILLS & WORK (Modern Grid) --- */
+        .section-header {
+            margin-bottom: 4rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-subtle);
+            padding-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+        }
         .section-header h2 { font-size: 2rem; letter-spacing: -1px; }
-        .line { flex: 1; height: 1px; background: #333; }
+        .section-header p { font-size: 0.9rem; color: var(--text-muted); }
 
-        .service-grid {
+        .grid-3 {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
-            padding-bottom: 6rem;
         }
 
-        .service-card {
-            background: var(--card-bg);
+        /* Kartu Keahlian & Proyek */
+        .card {
+            background: var(--bg-card);
             padding: 2.5rem;
-            border-radius: 16px;
-            transition: 0.4s var(--transition);
-            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            border: 1px solid var(--border-subtle);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
         }
 
-        .service-card:hover {
-            transform: translateY(-5px);
+        .card:hover {
+            transform: translateY(-8px);
             border-color: var(--accent);
-            background: #222;
+            box-shadow: 0 20px 40px -20px rgba(0,0,0,0.5);
         }
 
         .icon-box {
-            width: 50px; height: 50px;
-            background: rgba(197, 168, 128, 0.1);
-            border-radius: 12px;
+            width: 48px; height: 48px;
             display: flex; align-items: center; justify-content: center;
-            margin-bottom: 1.5rem;
+            background: #1f1f22;
+            border-radius: 8px;
             color: var(--accent);
+            margin-bottom: 1.5rem;
         }
 
-        /* --- FOOTER --- */
-        footer { padding: 4rem 0; border-top: 1px solid #222; color: var(--text-muted); text-align: center;}
+        .card h3 { font-size: 1.3rem; margin-bottom: 0.8rem; font-weight: 600; }
+        .card p { font-size: 0.95rem; color: var(--text-muted); }
 
-        /* --- RESPONSIVE --- */
+        /* Label kategori kecil di kartu proyek */
+        .project-tag {
+            font-size: 0.75rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        /* --- 6. FOOTER --- */
+        footer {
+            padding: 5rem 0 2rem;
+            border-top: 1px solid var(--border-subtle);
+            text-align: center;
+            color: var(--text-muted);
+        }
+        footer p { font-size: 0.9rem; }
+
+        /* Mobile Responsive */
         @media (max-width: 768px) {
-            .hero-h1 { font-size: 3rem; }
-            .intro-section { grid-template-columns: 1fr; text-align: center; gap: 3rem; }
-            .intro-text { order: 2; }
-            .photo-frame { order: 1; max-width: 400px; margin: 0 auto; }
+            .hero h1 { font-size: 3rem; }
+            .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+            .container { padding: 0 1.5rem; }
+            .section { padding: 5rem 0; }
         }
 
+        /* Animation Utility */
         .fade-up { opacity: 0; transform: translateY(30px); transition: 0.8s ease-out; }
         .visible { opacity: 1; transform: translateY(0); }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <nav class="fade-up">
-            <div class="logo">Portofolio<span>.</span></div>
-            <div>
-                <a href="mailto:Dwifmaziz@gmail.com" style="color: var(--accent); font-weight: 500;">Hubungi Saya</a>
-            </div>
-        </nav>
-    </div>
+    <nav>
+        <div class="logo">DWIFMA <span>.</span></div>
+        <a href="mailto:Dwifmaziz@gmail.com" class="btn-contact">Hubungi Saya</a>
+    </nav>
 
-    <header class="hero-full">
-        <div class="container" style="width: 100%;">
-            <div class="fade-up">
-                <div class="hero-subtitle">Mahasiswa Teknik Elektro</div>
-                <h1 class="hero-h1">Keep <span> Moving</span><br>EMD PICTURES</h1>
-            </div>
+    <header class="hero">
+        <div class="hero-content fade-up">
+            <span class="badge">Teknik Elektro & Kreatif</span>
+            <h1>Keep Moving<br><span>EMD PICTURES</span></h1>
         </div>
     </header>
 
     <div class="container">
         
-        <section class="intro-section">
-            <div class="photo-frame fade-up">
-                <img src="pp.jpg" alt="Foto Profil Dwifma">
-            </div>
+        <section class="section">
+            <div class="about-grid">
+                <div class="image-wrapper fade-up">
+                    <img src="foto-profil.png" alt="Dwifma Profile">
+                </div>
 
-            <div class="intro-text fade-up" style="transition-delay: 0.2s;">
-                <h2>Tentang Saya.</h2>
-                <p>
-                    Saya merupakan lulusan dari SMKN 4 Bandung dengan prodi TEAV (Teknik Elektronika Audio Video) tahun 2024 dan sekarang saya melanjutkan studi di Universitas Pendidikan Indonesia dengan program studi Teknik Elektro (S1). Disini saya ingin mencari pengalaman bekerja dan menambah skill diri saya di perusahaan yang dipimpin oleh Bapak/Ibu.
-                </p>
-                <p>
-                    Saya juga mempunyai pengalaman PKL di PT. Pindad Enjinering Indonesia selama 4 bulan, saya ditempatkan pada posisi mechanic motor listrik dan percetakan. Lalu saya juga sedikit banyak memiliki minat dan bakat dibidang kreatif seperti editing video dan photo.
-                </p>
+                <div class="about-text fade-up" style="transition-delay: 0.2s;">
+                    <h2>Tentang Saya.</h2>
+                    <p>
+                        Saya adalah lulusan <span class="highlight">SMKN 4 Bandung</span> program studi Teknik Elektronika Audio Video (TEAV) tahun 2024. Saat ini, saya sedang menempuh pendidikan Sarjana (S1) <span class="highlight">Teknik Elektro di Universitas Pendidikan Indonesia</span>.
+                    </p>
+                    <p>
+                        Memiliki pengalaman praktik kerja lapangan di <span class="highlight">PT. Pindad Enjinering Indonesia</span> selama 4 bulan sebagai Mekanik Motor Listrik dan divisi percetakan. 
+                    </p>
+                    <p>
+                        Saya menggabungkan pemahaman teknis <em>hardware</em> dengan minat kuat di bidang kreatif digital (editing foto/video). Saya terbuka untuk peluang kolaborasi profesional untuk mengembangkan solusi yang efisien dan inovatif.
+                    </p>
+                </div>
             </div>
         </section>
 
-        <section id="services">
+        <section class="section">
             <div class="section-header fade-up">
-                <h2>Keahlian Utama</h2>
-                <div class="line"></div>
+                <h2>Keahlian</h2>
+                <p>Kombinasi Teknis & Kreatif</p>
             </div>
 
-            <div class="service-grid">
-                <div class="service-card fade-up">
-                    <div class="icon-box">
-                        <i data-feather="cpu"></i>
-                    </div>
+            <div class="grid-3">
+                <div class="card fade-up">
+                    <div class="icon-box"><i data-feather="cpu"></i></div>
                     <h3>Elektronika & Hardware</h3>
-                    <p>Elektronika dan kelistrikan sederhana.</p>
+                    <p>Pemahaman mendalam tentang rangkaian elektronika, kelistrikan dasar, dan perbaikan perangkat keras.</p>
                 </div>
 
-                <div class="service-card fade-up" style="transition-delay: 0.1s;">
-                    <div class="icon-box">
-                        <i data-feather="video"></i>
-                    </div>
-                    <h3>Kreatif</h3>
-                    <p>Editing Photo/Video sederhana.</p>
+                <div class="card fade-up" style="transition-delay: 0.1s;">
+                    <div class="icon-box"><i data-feather="video"></i></div>
+                    <h3>Multimedia Kreatif</h3>
+                    <p>Kemampuan editing foto dan video untuk kebutuhan dokumentasi maupun konten digital yang menarik.</p>
                 </div>
 
-                <div class="service-card fade-up" style="transition-delay: 0.2s;">
-                    <div class="icon-box">
-                        <i data-feather="code"></i>
-                    </div>
+                <div class="card fade-up" style="transition-delay: 0.2s;">
+                    <div class="icon-box"><i data-feather="code"></i></div>
                     <h3>Implementasi Digital</h3>
-                    <p>Pemrograman dasar.</p>
+                    <p>Dasar pemrograman untuk mendukung integrasi antara perangkat keras dan sistem digital.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="work" class="section">
+            <div class="section-header fade-up">
+                <h2>Proyek Unggulan</h2>
+                <p>Beberapa hal yang sedang atau telah dikerjakan</p>
+            </div>
+
+            <div class="grid-3">
+                <div class="card fade-up">
+                    <span class="project-tag">Elektronika</span>
+                    <h3>Motor Listrik Maintenance</h3>
+                    <p>Dokumentasi dan perawatan sistem motor listrik saat periode PKL di industri manufaktur.</p>
+                </div>
+
+                <div class="card fade-up" style="transition-delay: 0.1s;">
+                    <span class="project-tag">Video Editing</span>
+                    <h3>Cinematic Documentation</h3>
+                    <p>Proyek editing video kreatif untuk keperluan dokumentasi acara dan profil sekolah.</p>
+                </div>
+
+                <div class="card fade-up" style="transition-delay: 0.2s;">
+                    <span class="project-tag">IoT & Hardware</span>
+                    <h3>Audio Video System</h3>
+                    <p>Perancangan dan instalasi sistem audio video dasar sesuai standar industri.</p>
                 </div>
             </div>
         </section>
 
         <footer>
-            <p class="fade-up">&copy; 2025 DWIFMA - EMDCORPS</p>
+            <div class="logo" style="margin-bottom: 1rem;">EMDCORPS</div>
+            <p class="fade-up">&copy; 2025 DWIFMA. All Rights Reserved.</p>
         </footer>
     </div>
 
