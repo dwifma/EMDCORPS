@@ -3,28 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portofolio | Modern & Bold</title>
+    <title>Portofolio | Teknik Elektro & TEAV</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;400&family=Space+Grotesk:wght@300;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;400;500&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
     
     <script src="https://unpkg.com/feather-icons"></script>
 
     <style>
-        /* --- VARIABEL WARNA ELEGAN --- */
+        /* --- VARIABEL WARNA --- */
         :root {
-            /* Latar bukan hitam pekat, tapi Charcoal gelap agar tidak kaku */
             --bg-color: #121214; 
             --card-bg: #1c1c1f;
-            
-            /* Teks */
             --text-main: #ECECEC;
             --text-muted: #9A9A9A;
-            
-            /* Aksen: Muted Bronze (Elegan & Dewasa) */
+            /* Aksen: Muted Bronze */
             --accent: #C5A880; 
-            
             --transition: cubic-bezier(0.16, 1, 0.3, 1);
         }
 
@@ -33,22 +28,21 @@
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
-            font-family: 'DM Sans', sans-serif; /* Font isi yang bersih */
+            font-family: 'DM Sans', sans-serif;
             overflow-x: hidden;
         }
 
-        /* TIPOGRAFI TEGAS TAPI MODERN */
-        h1, h2, h3 {
+        h1, h2, h3, h4 {
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 700;
             line-height: 1.1;
         }
 
         a { text-decoration: none; color: inherit; transition: 0.3s; }
+        img { max-width: 100%; display: block; }
         
-        /* --- CONTAINER UTAMA --- */
         .container {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
             padding: 0 2rem;
         }
@@ -67,140 +61,140 @@
             font-weight: 700;
             letter-spacing: -1px;
         }
-        
         .logo span { color: var(--accent); }
 
-        .nav-link {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-left: 2rem;
-        }
-        
-        .nav-link:hover { color: var(--accent); }
-
-        /* --- HERO SECTION --- */
+        /* --- HERO SECTION DENGAN LATAR BELAKANG SAMAR --- */
         .hero {
-            height: 85vh; /* Tidak full 100vh agar user melihat ada konten di bawah */
+            position: relative; /* Penting untuk posisi absolute background */
+            min-height: 70vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            max-width: 900px;
+            padding: 4rem 0;
+            overflow: hidden;
+        }
+
+        /* Latar belakang gambar samar menggunakan pseudo-element */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            /* Gambar placeholder sirkuit/teknologi */
+            background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3');
+            background-size: cover;
+            background-position: center;
+            /* KUNCI: Opasitas sangat rendah dan hitam putih */
+            opacity: 0.08; 
+            filter: grayscale(100%);
+            z-index: -1; /* Taruh di belakang teks */
         }
 
         .hero h1 {
-            font-size: 4.5rem; /* Ukuran besar untuk kesan tegas */
-            margin-bottom: 1.5rem;
+            font-size: 4rem;
             letter-spacing: -2px;
-            background: linear-gradient(to right, #fff, #999);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
         }
 
-        .hero p {
-            font-size: 1.25rem;
-            color: var(--text-muted);
-            max-width: 600px;
-            line-height: 1.6;
-        }
-
-        .btn-main {
-            display: inline-block;
-            margin-top: 2.5rem;
-            padding: 1rem 2rem;
-            border: 1px solid var(--text-muted);
-            border-radius: 50px; /* Sudut bulat menghilangkan kesan kaku */
-            font-weight: 600;
-        }
-
-        .btn-main:hover {
-            border-color: var(--accent);
+        .hero h1 span {
             color: var(--accent);
         }
 
-        /* --- SERVICES / SKILLS (PENGGUNAAN ICON) --- */
-        .services { padding: 8rem 0; }
-        
-        .section-header {
-            margin-bottom: 4rem;
-            display: flex;
-            align-items: baseline;
-            gap: 1rem;
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            font-weight: 400;
         }
-        
-        .section-header h2 { font-size: 2.5rem; letter-spacing: -1px; }
+
+        /* --- NEW SECTION: INTRO & PHOTO --- */
+        .intro-section {
+            padding: 4rem 0 8rem 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Membagi 2 kolom */
+            gap: 4rem;
+            align-items: center;
+        }
+
+        /* Bingkai Foto Elegan */
+        .photo-frame {
+            position: relative;
+            border-radius: 24px; /* Sudut melengkung */
+            overflow: hidden;
+            /* Efek bayangan halus */
+            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.5);
+        }
+
+        /* Garis pinggir tipis aksen */
+        .photo-frame::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border: 1px solid var(--accent);
+            border-radius: 24px;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .intro-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .intro-text p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+
+        /* --- SERVICES --- */
+        .section-header { margin-bottom: 3rem; display: flex; align-items: baseline; gap: 1rem; }
+        .section-header h2 { font-size: 2rem; letter-spacing: -1px; }
         .line { flex: 1; height: 1px; background: #333; }
 
         .service-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 2rem;
+            padding-bottom: 6rem;
         }
 
         .service-card {
             background: var(--card-bg);
             padding: 2.5rem;
-            border-radius: 16px; /* Tidak kotak tajam */
+            border-radius: 16px;
             transition: 0.4s var(--transition);
-            border: 1px solid transparent;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
         .service-card:hover {
             transform: translateY(-5px);
-            border-color: #333;
+            border-color: var(--accent);
             background: #222;
         }
 
-        /* Styling Icon agar Elegan */
         .icon-box {
-            width: 50px;
-            height: 50px;
-            background: rgba(197, 168, 128, 0.1); /* Warna accent transparan */
+            width: 50px; height: 50px;
+            background: rgba(197, 168, 128, 0.1);
             border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             margin-bottom: 1.5rem;
             color: var(--accent);
         }
-
-        .service-card h3 { font-size: 1.25rem; margin-bottom: 0.5rem; }
-        .service-card p { font-size: 0.9rem; color: var(--text-muted); }
-
-        /* --- SELECTED WORKS --- */
-        .work-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 3rem 0;
-            border-bottom: 1px solid #222;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .work-item:hover { padding-left: 1rem; border-bottom: 1px solid var(--accent); }
-
-        .work-info h3 { font-size: 2rem; margin-bottom: 0.5rem; }
-        .work-info span { color: var(--accent); font-family: 'Space Grotesk', sans-serif; }
-        .arrow-icon { opacity: 0; transition: 0.3s; color: var(--accent); }
-        .work-item:hover .arrow-icon { opacity: 1; transform: translateX(-10px); }
-
+        
         /* --- FOOTER --- */
-        footer {
-            padding: 4rem 0;
-            margin-top: 4rem;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
+        footer { padding: 4rem 0; border-top: 1px solid #222; color: var(--text-muted); text-align: center;}
 
         /* --- RESPONSIVE --- */
         @media (max-width: 768px) {
             .hero h1 { font-size: 3rem; }
-            .service-grid { grid-template-columns: 1fr; }
-            .work-item { flex-direction: column; align-items: flex-start; gap: 1rem; }
-            .arrow-icon { display: none; }
+            /* Ubah layout intro menjadi vertikal di HP */
+            .intro-section { grid-template-columns: 1fr; text-align: center; gap: 3rem; }
+            .intro-text { order: 2; } /* Teks di bawah foto */
+            .photo-frame { order: 1; max-width: 400px; margin: 0 auto; }
         }
 
-        /* Scroll Reveal Animation Classes */
+        /* Scroll Reveal Classes */
         .fade-up { opacity: 0; transform: translateY(30px); transition: 0.8s ease-out; }
         .visible { opacity: 1; transform: translateY(0); }
     </style>
@@ -211,101 +205,74 @@
         <nav class="fade-up">
             <div class="logo">Portofolio<span>.</span></div>
             <div>
-                <a href="#services" class="nav-link">Layanan</a>
-                <a href="#work" class="nav-link">Karya</a>
-                <a href="mailto:halo@email.com" class="nav-link" style="color: var(--accent);">Kontak</a>
+                <a href="Dwifmaziz@gmail.com" style="color: var(--accent); font-weight: 500;">Hubungi Saya</a>
             </div>
         </nav>
 
         <header class="hero">
-            <h1 class="fade-up" style="transition-delay: 0.1s;">Digital Designer<br>& Developer.</h1>
-            <p class="fade-up" style="transition-delay: 0.2s;">
-                Saya merancang antarmuka digital yang fungsional dengan estetika yang bersih. Fokus pada detail, tipografi, dan interaksi yang halus.
-            </p>
-            <div class="fade-up" style="transition-delay: 0.3s;">
-                <a href="#work" class="btn-main">Lihat Portfolio</a>
+            <div class="fade-up">
+                <div class="hero-subtitle">Mahasiswa Teknik Elektro</div>
+                <h1>Keep<span>Moving</span><br>EMD PICTURES</h1>
             </div>
         </header>
 
-        <section id="services" class="services">
+        <section class="intro-section">
+            <div class="photo-frame fade-up">
+                <img src="foto-profil.png" alt="Foto Profil">
+            </div>
+
+            <div class="intro-text fade-up" style="transition-delay: 0.2s;">
+                <h2>Tentang saya.</h2>
+                <p>
+                   Saya merupakan lulusan dari SMKN 4 Bandung dengan prodi TEAV (Teknik elektronika audio video) tahun 2024 dan sekarang saya melanjutkan studi di Universitas Pendidikan Indonesia dengan program studi Teknik Elektro (s1), disini saya ingin mencari pengalaman bekerja dan menambah skill diri saya di perusahaan yang dimpinpin oleh bapak/ibu.
+                </p>
+                <p>
+                   Saya juga mempunyai pengalaman PKL di PT.Pindad Enjinering Indonesia selama 4 bulan, saya ditempatkan pada posisi mechanic motor listrik dan percetakan. Lalu saya juga sedikit banyak memiliki minat dan bakat dibidang kreatif seperti editing video dan photo.
+                </p>
+            </div>
+        </section>
+
+        <section id="services">
             <div class="section-header fade-up">
-                <h2>Keahlian</h2>
+                <h2>Keahlian Utama</h2>
                 <div class="line"></div>
             </div>
 
             <div class="service-grid">
                 <div class="service-card fade-up">
                     <div class="icon-box">
-                        <i data-feather="layout"></i> </div>
-                    <h3>UI Design</h3>
-                    <p>Merancang tampilan antarmuka yang modern, rapi, dan mudah digunakan oleh pengguna.</p>
+                        <i data-feather="cpu"></i>
+                    </div>
+                    <h3>Elektronika & Hardware</h3>
+                    <p>Elektronika dan kelistrikan sederhana</p>
                 </div>
 
                 <div class="service-card fade-up" style="transition-delay: 0.1s;">
                     <div class="icon-box">
-                        <i data-feather="code"></i> </div>
-                    <h3>Development</h3>
-                    <p>Menerjemahkan desain menjadi kode website yang bersih, cepat, dan responsif.</p>
+                        <i data-feather="video"></i>
+                    </div>
+                    <h3>Audio Video (TEAV)</h3>
+                    <p>Editing Photo/Video sederhana</p>
                 </div>
 
                 <div class="service-card fade-up" style="transition-delay: 0.2s;">
                     <div class="icon-box">
-                        <i data-feather="pen-tool"></i> </div>
-                    <h3>Branding</h3>
-                    <p>Membantu membangun identitas visual yang kuat dan konsisten untuk bisnis Anda.</p>
+                        <i data-feather="code"></i>
+                    </div>
+                    <h3>Implementasi Digital</h3>
+                    <p>pemrograman dasar.</p>
                 </div>
             </div>
         </section>
 
-        <section id="work" style="padding-bottom: 6rem;">
-            <div class="section-header fade-up">
-                <h2>Karya Pilihan</h2>
-                <div class="line"></div>
-            </div>
-
-            <div class="works-list">
-                <div class="work-item fade-up">
-                    <div class="work-info">
-                        <span>01</span>
-                        <h3>Fintech Dashboard</h3>
-                    </div>
-                    <i data-feather="arrow-right" class="arrow-icon"></i>
-                </div>
-
-                <div class="work-item fade-up">
-                    <div class="work-info">
-                        <span>02</span>
-                        <h3>Coffee Shop Brand</h3>
-                    </div>
-                    <i data-feather="arrow-right" class="arrow-icon"></i>
-                </div>
-
-                <div class="work-item fade-up">
-                    <div class="work-info">
-                        <span>03</span>
-                        <h3>Travel App UI</h3>
-                    </div>
-                    <i data-feather="arrow-right" class="arrow-icon"></i>
-                </div>
-            </div>
-        </section>
-
-        <footer class="fade-up">
-            <div style="display: flex; justify-content: space-between; border-top: 1px solid #222; padding-top: 2rem;">
-                <p>&copy; 2024 Nama Anda.</p>
-                <div>
-                    <a href="#" style="margin-left: 1rem;">Instagram</a>
-                    <a href="#" style="margin-left: 1rem;">LinkedIn</a>
-                </div>
-            </div>
+        <footer>
+            <p class="fade-up">&copy; 2025 DWIFMA - EMDCORPS</p>
         </footer>
     </div>
 
     <script>
-        // Inisialisasi Feather Icons (Mengubah tag <i> menjadi SVG)
         feather.replace();
 
-        // Script Animasi Scroll Sederhana
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
