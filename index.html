@@ -7,365 +7,263 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;400;500;600&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/feather-icons"></script>
 
     <style>
-        /* --- 1. VARIABEL & RESET --- */
         :root {
-            --bg-body: #0f0f11;
-            --bg-card: #161618;
+            --bg-dark: #0e0e10;
             --text-main: #F2F2F2;
-            --text-muted: #A1A1AA;
-            --accent: #D4B688; /* Warna Bronze/Emas redup yang elegan */
-            --border-subtle: rgba(255, 255, 255, 0.08);
-            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            --text-muted: #888890;
+            --accent: #D4B688; 
+            --cursor-size: 20px;
         }
 
+        /* Reset & Base */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-
+        html { scroll-behavior: smooth; overflow-x: hidden; }
+        
         body {
-            background-color: var(--bg-body);
+            background-color: var(--bg-dark);
             color: var(--text-main);
             font-family: 'DM Sans', sans-serif;
+            position: relative;
             line-height: 1.6;
-            overflow-x: hidden;
+            overflow-x: hidden; /* Mencegah scroll samping */
+            min-height: 100vh;
         }
 
-        h1, h2, h3, h4 {
-            font-family: 'Space Grotesk', sans-serif;
-            color: #fff;
-            line-height: 1.1;
+        /* --- 1. AMBIENT BACKGROUND --- */
+        .noise-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 999; opacity: 0.05;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
-        a { text-decoration: none; color: inherit; transition: var(--transition); }
-        img { width: 100%; height: auto; display: block; }
+        .ambient-light {
+            position: fixed; width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(212, 182, 136, 0.08) 0%, rgba(0,0,0,0) 70%);
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            z-index: -1; animation: pulse 10s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            100% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+        }
+
+        /* --- 2. CUSTOM CURSOR (Versi Aman) --- */
+        .cursor {
+            width: var(--cursor-size); height: var(--cursor-size);
+            border: 1px solid var(--text-main); border-radius: 50%;
+            position: fixed; pointer-events: none; z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease, background 0.3s ease;
+            mix-blend-mode: difference;
+            display: none; /* Tersembunyi sampai JS aktif */
+        }
         
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 2rem;
+        /* Class ini hanya ditambahkan oleh JS jika desktop */
+        body.custom-cursor-active * { cursor: none !important; }
+        body.custom-cursor-active .cursor { display: block; }
+
+        .cursor.hovered {
+            background: var(--text-main); transform: translate(-50%, -50%) scale(2.5);
+            opacity: 0.5; border: none;
         }
 
-        /* --- 2. NAVIGATION (Glass Effect) --- */
+        /* --- LAYOUT --- */
+        h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; line-height: 1.1; }
+        a { text-decoration: none; color: inherit; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+
+        /* NAV */
         nav {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            padding: 1.5rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-            background: rgba(15, 15, 17, 0.8); /* Transparan */
-            backdrop-filter: blur(12px); /* Efek kaca buram */
-            border-bottom: 1px solid var(--border-subtle);
+            padding: 2rem 0; display: flex; justify-content: space-between; align-items: center;
+            position: relative; z-index: 10;
         }
-
-        .logo {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.2rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
+        .logo { font-size: 1.2rem; font-weight: 700; letter-spacing: -1px; }
         .logo span { color: var(--accent); }
 
         .btn-contact {
-            padding: 0.6rem 1.2rem;
-            border: 1px solid var(--border-subtle);
-            border-radius: 50px;
-            font-size: 0.9rem;
-            transition: var(--transition);
+            color: var(--text-main); border: 1px solid #333; 
+            padding: 0.5rem 1.5rem; border-radius: 50px; font-size: 0.9rem; transition: 0.3s;
         }
-        .btn-contact:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-            background: rgba(212, 182, 136, 0.05);
-        }
+        .btn-contact:hover { background: var(--accent); border-color: var(--accent); color: #000; }
 
-        /* --- 3. HERO SECTION (Full Width & Clean) --- */
+        /* HERO */
         .hero {
+            min-height: 85vh; display: flex; flex-direction: column; justify-content: center;
             position: relative;
-            width: 100%;
-            height: 100vh; /* Full layar */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            overflow: hidden;
         }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            /* Menggunakan gambar background Anda */
-            background-image: url('https://raw.githubusercontent.com/dwifma/EMDCORPS/b1a75713218482394877dd9bc35749bf7fad3eda/Desain%20tanpa%20judul.jpg');
-            background-size: cover;
-            background-position: center;
-            opacity: 0.15; /* Opasitas rendah agar teks jelas */
-            filter: grayscale(100%) contrast(1.2);
-            z-index: -1;
-        }
-
-        .hero-content { z-index: 1; max-width: 800px; padding: 0 2rem; }
-        
-        .badge {
-            display: inline-block;
-            padding: 0.4rem 1rem;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--border-subtle);
-            border-radius: 100px;
-            font-size: 0.85rem;
-            color: var(--accent);
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
         .hero h1 {
-            font-size: 5rem;
-            letter-spacing: -3px;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(to bottom, #fff, #888);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 4.5rem; letter-spacing: -2px; margin-bottom: 1.5rem;
+            position: relative; z-index: 2;
         }
-        
-        .hero h1 span {
-            display: block;
-            font-size: 1.5rem;
-            letter-spacing: 5px;
-            font-weight: 400;
-            color: var(--accent);
-            -webkit-text-fill-color: var(--accent); /* Override gradient */
-            margin-top: 0.5rem;
-            text-transform: uppercase;
-        }
+        .hero h1 span { color: var(--accent); font-style: italic; }
 
-        /* --- 4. ABOUT SECTION (Refined Layout) --- */
-        .section { padding: 8rem 0; }
+        /* MARQUEE TEXT */
+        .marquee-container {
+            position: absolute; top: 15%; left: 0; width: 100%;
+            overflow: hidden; z-index: 0; opacity: 0.05; pointer-events: none;
+        }
+        .marquee-content { white-space: nowrap; display: flex; animation: scroll 30s linear infinite; }
+        .marquee-text {
+            font-size: 8rem; font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+            margin-right: 2rem; text-transform: uppercase;
+            -webkit-text-stroke: 2px #fff; color: transparent;
+        }
+        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-        .about-grid {
-            display: grid;
-            grid-template-columns: 0.8fr 1.2fr;
-            gap: 5rem;
-            align-items: center;
+        /* INTRO */
+        .intro-section { padding: 6rem 0; display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 4rem; align-items: center; }
+        .photo-frame {
+            position: relative; border-radius: 12px; overflow: hidden;
+            filter: grayscale(100%); transition: 0.5s; aspect-ratio: 1/1;
         }
-
-        /* Frame foto dengan style baru */
-        .image-wrapper {
-            position: relative;
-        }
-        .image-wrapper img {
-            border-radius: 12px;
-            filter: grayscale(100%);
-            transition: var(--transition);
-        }
-        .image-wrapper:hover img {
-            filter: grayscale(0%);
-            transform: scale(1.02);
-        }
-
+        .photo-frame img { width: 100%; height: 100%; object-fit: cover; }
+        .photo-frame:hover { filter: grayscale(0%); transform: scale(1.02); }
         .about-text h2 { font-size: 2.5rem; margin-bottom: 1.5rem; }
-        
-        /* Typography fix untuk teks panjang */
-        .about-text p {
-            font-size: 1.05rem;
-            color: var(--text-muted);
-            margin-bottom: 1.5rem;
-            text-align: justify;
-        }
-        
-        .highlight { color: #fff; font-weight: 500; }
+        .about-text p { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 1.5rem; }
 
-        /* --- 5. SKILLS & WORK (Modern Grid) --- */
-        .section-header {
-            margin-bottom: 4rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border-subtle);
-            padding-bottom: 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: end;
-        }
-        .section-header h2 { font-size: 2rem; letter-spacing: -1px; }
-        .section-header p { font-size: 0.9rem; color: var(--text-muted); }
-
-        .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        /* Kartu Keahlian & Proyek */
+        /* CARDS */
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; padding-bottom: 6rem; }
         .card {
-            background: var(--bg-card);
-            padding: 2.5rem;
-            border-radius: 12px;
-            border: 1px solid var(--border-subtle);
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
+            padding: 2rem; border-radius: 12px; transition: 0.3s;
         }
+        .card:hover { border-color: var(--accent); background: rgba(255,255,255,0.06); transform: translateY(-5px); }
+        .section-header { margin: 6rem 0 3rem; border-top: 1px solid #333; padding-top: 2rem; }
+        footer { padding: 4rem 0; text-align: center; color: var(--text-muted); border-top: 1px solid #222; }
 
-        .card:hover {
-            transform: translateY(-8px);
-            border-color: var(--accent);
-            box-shadow: 0 20px 40px -20px rgba(0,0,0,0.5);
-        }
-
-        .icon-box {
-            width: 48px; height: 48px;
-            display: flex; align-items: center; justify-content: center;
-            background: #1f1f22;
-            border-radius: 8px;
-            color: var(--accent);
-            margin-bottom: 1.5rem;
-        }
-
-        .card h3 { font-size: 1.3rem; margin-bottom: 0.8rem; font-weight: 600; }
-        .card p { font-size: 0.95rem; color: var(--text-muted); }
-
-        /* Label kategori kecil di kartu proyek */
-        .project-tag {
-            font-size: 0.75rem;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        /* --- 6. FOOTER --- */
-        footer {
-            padding: 5rem 0 2rem;
-            border-top: 1px solid var(--border-subtle);
-            text-align: center;
-            color: var(--text-muted);
-        }
-        footer p { font-size: 0.9rem; }
-
-        /* Mobile Responsive */
+        /* MOBILE RESPONSIVE */
         @media (max-width: 768px) {
-            .hero h1 { font-size: 3rem; }
-            .about-grid { grid-template-columns: 1fr; gap: 3rem; }
             .container { padding: 0 1.5rem; }
-            .section { padding: 5rem 0; }
+            .hero h1 { font-size: 2.8rem; }
+            .marquee-text { font-size: 4rem; -webkit-text-stroke: 1px #fff; }
+            .marquee-container { top: 20%; }
+            .intro-section { padding: 4rem 0; grid-template-columns: 1fr; gap: 2rem; }
+            .photo-frame { max-width: 100%; margin-bottom: 1rem; }
+            .ambient-light { width: 300px; height: 300px; }
         }
 
-        /* Animation Utility */
         .fade-up { opacity: 0; transform: translateY(30px); transition: 0.8s ease-out; }
         .visible { opacity: 1; transform: translateY(0); }
     </style>
 </head>
 <body>
-
-    <nav>
-        <div class="logo">Dwifma <span>.</span></div>
-        <a href="mailto:Dwifmaziz@gmail.com" class="btn-contact">Hubungi Saya</a>
-    </nav>
-
-    <header class="hero">
-        <div class="hero-content fade-up">
-            <span class="badge">Teknik Elektro & Kreatif</span>
-            <h1>Keep Moving<br><span>EMD PICTURES</span></h1>
-        </div>
-    </header>
+    
+    <div class="noise-overlay"></div>
+    <div class="ambient-light"></div>
+    
+    <div class="cursor" id="cursor"></div>
 
     <div class="container">
-        
-        <section class="section">
-            <div class="about-grid">
-                <div class="image-wrapper fade-up">
-                    <img src="pp.jpg" alt="Dwifma Profile">
-                </div>
+        <nav class="fade-up">
+            <div class="logo">DWIFMA <span>.</span></div>
+            <a href="mailto:Dwifmaziz@gmail.com" class="btn-contact hover-trigger">Hubungi Saya</a>
+        </nav>
 
-                <div class="about-text fade-up" style="transition-delay: 0.2s;">
-                    <h2>Tentang Saya.</h2>
-                    <p>
-                        Saya adalah lulusan <span class="highlight">SMKN 4 Bandung</span> program studi Teknik Elektronika Audio Video (TEAV) tahun 2024. Saat ini, saya sedang menempuh pendidikan Sarjana (S1) <span class="highlight">Teknik Elektro di Universitas Pendidikan Indonesia</span>.
-                    </p>
-                    <p>
-                        Memiliki pengalaman praktik kerja lapangan di <span class="highlight">PT. Pindad Enjinering Indonesia</span> selama 4 bulan sebagai Mekanik Motor Listrik dan divisi percetakan. 
-                    </p>
-                    <p>
-                        Saya menggabungkan pemahaman teknis <em>hardware</em> dengan minat kuat di bidang kreatif digital (editing foto/video). Saya terbuka untuk peluang kolaborasi profesional untuk mengembangkan solusi yang efisien dan inovatif.
-                    </p>
+        <header class="hero">
+            <div class="marquee-container">
+                <div class="marquee-content">
+                    <span class="marquee-text">EMD CORPS - KEEP MOVING - ENGINEERING - CREATIVE - </span>
+                    <span class="marquee-text">EMD CORPS - KEEP MOVING - ENGINEERING - CREATIVE - </span>
                 </div>
+            </div>
+
+            <div class="hero-content fade-up">
+                <p style="color: var(--accent); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 1rem; font-size: 0.9rem;">Mahasiswa Teknik Elektro</p>
+                <h1>Designing <span>Circuits</span><br>& Digital <span>Experiences</span>.</h1>
+            </div>
+        </header>
+
+        <section class="intro-section">
+            <div class="photo-frame fade-up hover-trigger">
+                <img src="foto-profil.png" alt="Profile" onerror="this.style.display='none'"> 
+            </div>
+            <div class="about-text fade-up">
+                <h2>Tentang Saya.</h2>
+                <p>Saya adalah lulusan <strong>SMKN 4 Bandung</strong> (TEAV) tahun 2024 dan kini melanjutkan studi S1 <strong>Teknik Elektro di UPI</strong>. Menggabungkan logika engineering dengan estetika kreatif.</p>
+                <p>Berpengalaman praktis di <strong>PT. Pindad Enjinering Indonesia</strong> sebagai Mekanik Motor Listrik. Saya siap berkolaborasi untuk menciptakan solusi yang efisien dan inovatif.</p>
             </div>
         </section>
 
-        <section class="section">
-            <div class="section-header fade-up">
-                <h2>Keahlian</h2>
-                <p>Kombinasi Teknis & Kreatif</p>
+        <div class="section-header fade-up">
+            <h2>Keahlian</h2>
+        </div>
+        <div class="grid-3">
+            <div class="card fade-up hover-trigger">
+                <i data-feather="cpu" style="color: var(--accent); margin-bottom: 1rem;"></i>
+                <h3>Elektronika</h3>
+                <p style="color: #888; font-size: 0.9rem;">Perancangan rangkaian & pemahaman hardware.</p>
             </div>
-
-            <div class="grid-3">
-                <div class="card fade-up">
-                    <div class="icon-box"><i data-feather="cpu"></i></div>
-                    <h3>Elektronika & Hardware</h3>
-                    <p>Pemahaman mendasar tentang rangkaian elektronika, kelistrikan dasar, dan perbaikan perangkat keras.</p>
-                </div>
-
-                <div class="card fade-up" style="transition-delay: 0.1s;">
-                    <div class="icon-box"><i data-feather="video"></i></div>
-                    <h3>Multimedia Kreatif</h3>
-                    <p>Kemampuan editing foto dan video.</p>
-                </div>
-
-                <div class="card fade-up" style="transition-delay: 0.2s;">
-                    <div class="icon-box"><i data-feather="code"></i></div>
-                    <h3>Implementasi Digital</h3>
-                    <p>Dasar pemrograman untuk mendukung integrasi antara perangkat keras dan sistem digital.</p>
-                </div>
+            <div class="card fade-up hover-trigger">
+                <i data-feather="video" style="color: var(--accent); margin-bottom: 1rem;"></i>
+                <h3>Multimedia</h3>
+                <p style="color: #888; font-size: 0.9rem;">Video editing & konten visual kreatif.</p>
             </div>
-        </section>
-
-        <section id="work" class="section">
-            <div class="section-header fade-up">
-                <h2>Proyek Unggulan</h2>
-                <p>Beberapa hal yang sedang atau telah dikerjakan</p>
+            <div class="card fade-up hover-trigger">
+                <i data-feather="code" style="color: var(--accent); margin-bottom: 1rem;"></i>
+                <h3>Programming</h3>
+                <p style="color: #888; font-size: 0.9rem;">Implementasi logika digital dasar.</p>
             </div>
+        </div>
 
-            <div class="grid-3">
-                <div class="card fade-up">
-                    <span class="project-tag">Elektronika</span>
-                    <h3>Motor Listrik Maintenance</h3>
-                    <p>Dokumentasi dan perawatan sistem motor listrik saat periode PKL di industri manufaktur.</p>
-                </div>
-
-                <div class="card fade-up" style="transition-delay: 0.1s;">
-                    <span class="project-tag">Video Editing</span>
-                    <h3>Cinematic Documentation</h3>
-                    <p>Proyek editing video kreatif untuk keperluan dokumentasi acara dan profil sekolah.</p>
-                </div>
-
-                <div class="card fade-up" style="transition-delay: 0.2s;">
-                    <span class="project-tag">IoT & Hardware</span>
-                    <h3>Audio Video System</h3>
-                    <p>Perancangan dan instalasi sistem audio video dasar sesuai standar industri.</p>
-                </div>
+        <div id="work" class="section-header fade-up">
+            <h2>Proyek</h2>
+        </div>
+        <div class="grid-3">
+            <div class="card fade-up hover-trigger">
+                <span style="font-size: 0.75rem; color: var(--accent); border: 1px solid var(--accent); padding: 2px 8px; border-radius: 4px;">PKL EXPERIENCE</span>
+                <h3 style="margin-top: 1rem;">Motor Listrik Pindad</h3>
+                <p style="color: #888; font-size: 0.9rem; margin-top: 0.5rem;">Maintenance dan perbaikan sistem motor listrik industri.</p>
             </div>
-        </section>
+            <div class="card fade-up hover-trigger">
+                <span style="font-size: 0.75rem; color: var(--accent); border: 1px solid var(--accent); padding: 2px 8px; border-radius: 4px;">CREATIVE</span>
+                <h3 style="margin-top: 1rem;">Dokumentasi Event</h3>
+                <p style="color: #888; font-size: 0.9rem; margin-top: 0.5rem;">Videografi dan editing untuk kegiatan organisasi.</p>
+            </div>
+        </div>
 
         <footer>
-            <div class="logo" style="margin-bottom: 1rem;">EMDCORPS</div>
-            <p class="fade-up">&copy; 2025 DWIFMA. All Rights Reserved.</p>
+            <p class="fade-up" style="font-size: 0.8rem;">&copy; 2025 DWIFMA - EMD CORPS</p>
         </footer>
     </div>
 
     <script>
-        feather.replace();
+        // Init Feather Icons
+        if (typeof feather !== 'undefined') {
+            feather.replace();
+        }
 
+        // --- SAFE CURSOR LOGIC ---
+        const cursor = document.getElementById('cursor');
+        const hoverTriggers = document.querySelectorAll('.hover-trigger, a, button');
+        
+        // Hanya aktifkan kursor custom jika di Desktop (bukan touch)
+        if (window.matchMedia("(hover: hover)").matches) {
+            
+            // 1. Tampilkan kursor custom & Sembunyikan mouse asli HANYA setelah JS jalan
+            document.body.classList.add('custom-cursor-active');
+
+            document.addEventListener('mousemove', (e) => {
+                // Update posisi kursor
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            });
+
+            // Efek Hover
+            hoverTriggers.forEach(trigger => {
+                trigger.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+                trigger.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+            });
+        }
+
+        // --- SCROLL ANIMATION ---
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
+                if (entry.isIntersecting) entry.target.classList.add('visible');
             });
         }, { threshold: 0.1 });
 
