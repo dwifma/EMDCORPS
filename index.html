@@ -12,13 +12,13 @@
 
     <style>
         :root {
-            --bg: #050505;
-            --card-bg: #111111;
-            --border: rgba(255, 255, 255, 0.1);
+            --bg: #020204; /* Sedikit lebih gelap untuk kontras */
+            --card-bg: #0c0c0c;
+            --border: rgba(255, 255, 255, 0.06);
             --text-main: #ffffff;
-            --text-muted: #888888;
+            --text-muted: #9ca3af;
             --accent: #0ea5e9; /* Sky Blue */
-            --spotlight-size: 400px;
+            --spotlight-size: 300px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -33,115 +33,152 @@
         }
 
         /* --- UTILITIES --- */
-        .container { max-width: 900px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 2; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 2; }
         a { text-decoration: none; color: inherit; }
-        
-        /* --- TYPOGRAPHY --- */
         h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; }
         .text-muted { color: var(--text-muted); font-size: 0.95rem; }
-        .highlight { color: var(--accent); }
 
         /* --- HERO SECTION --- */
         header {
-            min-height: 80vh; display: flex; flex-direction: column; justify-content: center;
-            border-bottom: 1px solid var(--border); margin-bottom: 4rem;
+            min-height: 90vh; /* Lebih tinggi agar lega */
+            display: flex; 
+            align-items: center;
+            margin-bottom: 4rem;
+            position: relative;
         }
 
+        /* Background halus di belakang hero */
+        header::before {
+            content: ''; position: absolute;
+            top: 20%; right: 10%;
+            width: 400px; height: 400px;
+            background: var(--accent);
+            filter: blur(150px); opacity: 0.15;
+            z-index: -1; animation: pulseGlow 10s infinite alternate;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Seimbang 50:50 */
+            align-items: center;
+            gap: 2rem;
+            width: 100%;
+        }
+
+        .hero-content { order: 1; }
+        /* Area foto di kanan, kita pusatkan */
+        .hero-image-area { order: 2; display: flex; justify-content: center; align-items: center; position: relative; }
+
+        /* --- ESTETIKA FOTO BARU (Profile Aesthetics) --- */
+        .profile-wrapper {
+            position: relative;
+            width: 320px; height: 320px; /* Sedikit lebih besar */
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        /* Efek cahaya berputar di belakang foto */
+        .profile-glow {
+            position: absolute;
+            width: 100%; height: 100%;
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; /* Bentuk organik */
+            background: linear-gradient(45deg, var(--accent), transparent 60%);
+            filter: blur(30px);
+            opacity: 0.3;
+            animation: rotateBlob 15s infinite linear;
+            z-index: 0;
+        }
+
+        .profile-image-container {
+            position: relative;
+            width: 280px; height: 350px; /* Bentuk portrait */
+            border-radius: 20px;
+            overflow: hidden;
+            z-index: 2;
+            /* Border gradien tipis */
+            padding: 1px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.2), transparent);
+            /* Bayangan halus ke bawah */
+            box-shadow: 0 20px 40px -20px rgba(0,0,0,0.8);
+        }
+
+        .profile-image-container img {
+            width: 100%; height: 100%; object-fit: cover;
+            border-radius: 19px;
+            /* KUNCI AGAR MENYATU: Masking gradien agar bawahnya pudar */
+            -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 98%);
+            mask-image: linear-gradient(to bottom, black 50%, transparent 98%);
+            transition: transform 0.5s ease, filter 0.5s ease;
+            filter: grayscale(20%);
+        }
+        
+        .profile-wrapper:hover img {
+            transform: scale(1.03); /* Zoom in halus saat hover */
+            filter: grayscale(0%) brightness(1.1);
+        }
+
+        /* --- TYPOGRAPHY HERO --- */
         .hero-badge {
             display: inline-flex; align-items: center; gap: 8px;
-            padding: 6px 16px; background: rgba(14, 165, 233, 0.1); 
-            border: 1px solid rgba(14, 165, 233, 0.3); border-radius: 100px;
-            color: var(--accent); font-size: 0.8rem; margin-bottom: 1.5rem;
-            width: fit-content;
+            padding: 6px 14px; background: rgba(14, 165, 233, 0.08); 
+            border: 1px solid rgba(14, 165, 233, 0.15); border-radius: 100px;
+            color: var(--accent); font-size: 0.75rem; margin-bottom: 1.5rem;
+            font-weight: 500; letter-spacing: 1px; text-transform: uppercase;
         }
 
-        .glitch-text { font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; margin-bottom: 1rem; }
+        .glitch-text { font-size: clamp(3rem, 6vw, 4.5rem); line-height: 1; margin-bottom: 1.5rem; color: #fff; letter-spacing: -1px; }
+        .hero-desc { max-width: 480px; font-size: 1.1rem; margin-bottom: 2.5rem; }
 
-        /* --- SPOTLIGHT CARDS SYSTEM --- */
-        .cards-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;
+        .btn-contact {
+            display: inline-flex; align-items: center; gap: 12px;
+            padding: 14px 28px; background: var(--text-main); color: var(--bg);
+            border-radius: 50px; font-weight: 600; font-size: 0.95rem;
+            transition: 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
+        .btn-contact:hover { transform: translateY(-3px); box-shadow: 0 10px 20px -10px rgba(255,255,255,0.3); }
 
+        /* --- Content Sections (Sama seperti sebelumnya, hanya dirapikan jaraknya) --- */
+        section { margin-bottom: 8rem; }
+        .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
+        
+        /* --- SPOTLIGHT CARDS --- */
+        .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2rem; }
         .card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 2rem;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.1s; /* Quick response for tilt */
-            /* Untuk efek tilt */
-            transform-style: preserve-3d;
-            perspective: 1000px;
+            background-color: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 2.5rem 2rem;
+            position: relative; overflow: hidden; transition: transform 0.1s; transform-style: preserve-3d; perspective: 1000px;
         }
-
-        /* Spotlight Effect Overlay */
-        .card::before {
-            content: '';
-            position: absolute;
-            background: radial-gradient(
-                var(--spotlight-size) circle at var(--mouse-x) var(--mouse-y), 
-                rgba(255, 255, 255, 0.06), 
-                transparent 40%
-            );
-            z-index: 3;
-            top: 0; left: 0; width: 100%; height: 100%;
-            opacity: 0; transition: opacity 0.5s;
-            pointer-events: none;
+        .card::before { /* Spotlight */
+            content: ''; position: absolute; background: radial-gradient(var(--spotlight-size) circle at var(--mouse-x) var(--mouse-y), rgba(255, 255, 255, 0.06), transparent 40%);
+            z-index: 3; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.5s; pointer-events: none;
         }
-        
         .card:hover::before { opacity: 1; }
-        
-        /* Border Glow Effect */
-        .card::after {
-            content: '';
-            position: absolute;
-            background: radial-gradient(
-                var(--spotlight-size) circle at var(--mouse-x) var(--mouse-y), 
-                rgba(255, 255, 255, 0.3), 
-                transparent 40%
-            );
-            z-index: 1;
-            top: 0; left: 0; width: 100%; height: 100%;
-            opacity: 0; transition: opacity 0.5s;
-            pointer-events: none;
-        }
-        
         .card-content { position: relative; z-index: 4; }
-        
-        .card-icon { 
-            background: rgba(255,255,255,0.05); width: 48px; height: 48px; 
-            display: flex; align-items: center; justify-content: center; 
-            border-radius: 12px; margin-bottom: 1.5rem; border: 1px solid var(--border);
-            color: var(--text-main);
-        }
+        .card-icon { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; border-radius: 12px; margin-bottom: 1.5rem; background: rgba(255,255,255,0.03); color: #fff; border: 1px solid var(--border); }
 
-        /* --- EXPERIENCE ITEMS (Simple Hover) --- */
-        .exp-item {
-            display: flex; gap: 1.5rem; padding: 1.5rem;
-            border-bottom: 1px solid var(--border);
-            transition: background 0.3s;
-        }
-        .exp-item:hover { background: rgba(255,255,255,0.02); }
-        .exp-img {
-            width: 80px; height: 60px; object-fit: cover; border-radius: 8px;
-            background: #222; flex-shrink: 0;
-        }
+        /* --- EXPERIENCE --- */
+        .exp-list { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 0 2.5rem; }
+        .exp-item { display: flex; gap: 1.5rem; padding: 2rem 0; border-bottom: 1px solid var(--border); align-items: center; }
+        .exp-item:last-child { border-bottom: none; }
+        .exp-img { width: 64px; height: 64px; object-fit: cover; border-radius: 12px; background: #222; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.1); }
 
-        /* --- ANIMATION UTILS --- */
-        .fade-up {
-            opacity: 0; transform: translateY(30px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
+        /* --- ANIMATIONS --- */
+        .fade-up { opacity: 0; transform: translateY(40px); transition: 1s cubic-bezier(0.2, 0.8, 0.2, 1); }
         .fade-up.visible { opacity: 1; transform: translateY(0); }
+        @keyframes rotateBlob { from { transform: rotate(0deg) scale(1); } to { transform: rotate(360deg) scale(1.1); } }
+        @keyframes pulseGlow { 0% { opacity: 0.1; } 100% { opacity: 0.2; } }
 
-        /* --- FOOTER --- */
-        footer { padding: 4rem 0; text-align: center; color: var(--text-muted); font-size: 0.8rem; }
+        footer { padding: 5rem 0; text-align: center; color: var(--text-muted); font-size: 0.9rem; }
 
+        /* --- RESPONSIVE --- */
         @media (max-width: 768px) {
-            /* Matikan efek spotlight berat di HP agar ringan */
-            .card::before, .card::after { display: none; } 
-            .card:active { transform: scale(0.98); }
+            header { min-height: auto; padding-top: 4rem; }
+            .hero-grid { grid-template-columns: 1fr; gap: 3rem; text-align: center; }
+            .hero-content { order: 2; display: flex; flex-direction: column; align-items: center; }
+            .hero-image-area { order: 1; }
+            .hero-desc { margin-left: auto; margin-right: auto; }
+            .profile-wrapper { width: 260px; height: 260px; }
+            .card::before { display: none; } /* Disable spotlight on mobile */
+            .glitch-text { font-size: 2.5rem; }
+            .section-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
         }
     </style>
 </head>
@@ -150,95 +187,108 @@
     <div class="container">
         
         <header>
-            <div class="fade-up">
-                <div class="hero-badge">
-                    <span style="width: 8px; height: 8px; background: var(--accent); border-radius: 50%; display: inline-block;"></span>
-                    Open to Collaborate
+            <div class="hero-grid">
+                <div class="hero-content fade-up">
+                    <div class="hero-badge">
+                        <i data-feather="activity" style="width: 14px; margin-right: 6px;"></i>
+                        Engineering Student
+                    </div>
+                    <h1 class="glitch-text" data-value="DWI FAUZAN M.A.">DWI FAUZAN M.A</h1>
+                    <p class="text-muted hero-desc">
+                        Mahasiswa Teknik Elektro (UPI) & Lulusan SMKN 4 Bandung. 
+                        Menghubungkan presisi teknik dengan eksplorasi kreatif dunia digital.
+                    </p>
+                    
+                    <a href="mailto:Dwifmaziz@gmail.com" class="btn-contact">
+                        <i data-feather="mail" style="width: 18px;"></i>
+                        Hubungi Saya
+                    </a>
                 </div>
-                <h1 class="glitch-text" data-value="DWI FAUZAN M.A.">DWI FAUZAN M.A.</h1>
-                <p class="text-muted" style="max-width: 500px;">
-                    Mahasiswa Teknik Elektro (UPI) & Lulusan SMKN 4 Bandung. <br>
-                    Menghubungkan prinsip teknik (Engineering) dengan kreativitas digital.
-                </p>
-                <div style="margin-top: 2rem; display: flex; gap: 1rem;">
-                    <a href="mailto:Dwifmaziz@gmail.com" style="border-bottom: 1px solid white; padding-bottom: 4px;">Email Saya</a>
-                    <a href="#projects" style="color: var(--text-muted); hover: color: white;">Lihat Karya</a>
+
+                <div class="hero-image-area fade-up" style="transition-delay: 0.2s;">
+                    <div class="profile-wrapper">
+                        <div class="profile-glow"></div>
+                        
+                        <div class="profile-image-container">
+                            <img src="propil.jpg" alt="Dwi Fauzan" onerror="this.src='https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1000&auto=format&fit=crop'">
+                        </div>
+                    </div>
                 </div>
             </div>
         </header>
 
-        <section id="skills" style="margin-bottom: 6rem;">
-            <div class="fade-up" style="margin-bottom: 2rem;">
-                <h2>Minat Utama</h2>
+        <section id="skills">
+            <div class="section-header fade-up">
+                <h2>Minat Utama.</h2>
+                <span class="text-muted">Fokus pengembangan diri</span>
             </div>
+            
             <div class="cards-grid">
                 <div class="card fade-up">
                     <div class="card-content">
                         <div class="card-icon"><i data-feather="cpu"></i></div>
                         <h3>Elektronika</h3>
-                        <p class="text-muted" style="margin-top: 0.5rem;">
-                            Memahami dasar rangkaian, komponen, dan instrumentasi pengukuran standar industri.
+                        <p class="text-muted" style="margin-top: 0.8rem;">
+                            Pemahaman fundamental pada rangkaian listrik, komponen aktif/pasif, dan instrumentasi.
                         </p>
                     </div>
                 </div>
-                <div class="card fade-up">
+                <div class="card fade-up" style="transition-delay: 0.1s;">
                     <div class="card-content">
-                        <div class="card-icon"><i data-feather="video"></i></div>
+                        <div class="card-icon"><i data-feather="aperture"></i></div>
                         <h3>Multimedia</h3>
-                        <p class="text-muted" style="margin-top: 0.5rem;">
-                            Eksplorasi visual melalui editing video dan desain grafis untuk kebutuhan dokumentasi & kreatif.
+                        <p class="text-muted" style="margin-top: 0.8rem;">
+                            Produksi konten visual melalui editing video sinematik dan desain grafis kreatif.
                         </p>
                     </div>
                 </div>
-                <div class="card fade-up">
+                <div class="card fade-up" style="transition-delay: 0.2s;">
                     <div class="card-content">
-                        <div class="card-icon"><i data-feather="terminal"></i></div>
+                        <div class="card-icon"><i data-feather="code"></i></div>
                         <h3>Logic & Code</h3>
-                        <p class="text-muted" style="margin-top: 0.5rem;">
-                            Penerapan logika pemrograman dasar (Python/C++) untuk solusi mikrokontroler sederhana.
+                        <p class="text-muted" style="margin-top: 0.8rem;">
+                            Implementasi logika pemrograman (Python/C++) untuk sistem mikrokontroler dasar.
                         </p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="experience" style="margin-bottom: 6rem;">
-            <div class="fade-up" style="margin-bottom: 2rem;">
-                <h2>Jejak Langkah</h2>
+        <section id="experience">
+            <div class="section-header fade-up">
+                <h2>Jejak Langkah.</h2>
+                <span class="text-muted">Pengalaman & Organisasi</span>
             </div>
             
-            <div class="fade-up">
+            <div class="exp-list fade-up">
                 <div class="exp-item">
-                    <img src="pkl.jpg" class="exp-img" alt="PKL" onerror="this.src='https://via.placeholder.com/80x60/222/555?text=PKL'">
+                    <img src="pkl.jpg" class="exp-img" alt="PKL" onerror="this.src='https://via.placeholder.com/64/222/555?text=PKL'">
                     <div>
-                        <h3>Mekanik Motor Listrik</h3>
-                        <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 0.5rem;">PT. Pindad Enjinering Indonesia • PKL</p>
-                        <p class="text-muted">Melakukan maintenance preventif dan pengujian fungsional pada unit motor listrik industri.</p>
+                        <h3 style="font-size: 1.1rem;">Mekanik Motor Listrik</h3>
+                        <p class="text-muted">PT. Pindad Enjinering Indonesia <span style="color: var(--accent);">• PKL</span></p>
                     </div>
                 </div>
 
                 <div class="exp-item">
-                    <img src="erom.jpg" class="exp-img" alt="E-ROM" onerror="this.src='https://via.placeholder.com/80x60/222/555?text=ROBOT'">
+                    <img src="erom.jpg" class="exp-img" alt="E-ROM" onerror="this.src='https://via.placeholder.com/64/222/555?text=ROBOT'">
                     <div>
-                        <h3>Divisi Design 3D</h3>
-                        <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 0.5rem;">E-ROM Robotic Team • Organisasi</p>
-                        <p class="text-muted">Belajar merancang komponen mekanik robot sederhana menggunakan software CAD.</p>
+                        <h3 style="font-size: 1.1rem;">Divisi Design 3D</h3>
+                        <p class="text-muted">E-ROM Robotic Team <span style="color: var(--accent);">• Organisasi</span></p>
                     </div>
                 </div>
 
                 <div class="exp-item">
-                    <img src="hme.jpg" class="exp-img" alt="HME" onerror="this.src='https://via.placeholder.com/80x60/222/555?text=HME'">
+                    <img src="hme.jpg" class="exp-img" alt="HME" onerror="this.src='https://via.placeholder.com/64/222/555?text=HME'">
                     <div>
-                        <h3>Staff Pembinaan Anggota</h3>
-                        <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 0.5rem;">HME FPTI UPI • 2025/2026</p>
-                        <p class="text-muted">Berkontribusi dalam sub-bidang kerohanian dan pembuatan media publikasi visual.</p>
+                        <h3 style="font-size: 1.1rem;">Staff Pembinaan Anggota</h3>
+                        <p class="text-muted">HME FPTI UPI <span style="color: var(--accent);">• 2025/2026</span></p>
                     </div>
                 </div>
             </div>
         </section>
 
         <footer>
-            <p class="fade-up">&copy; 2025 Dwifma. All Rights Reserved.</p>
+            <p class="fade-up" style="opacity: 0.5;">&copy; 2025 Dwifma. Crafted with logic & creativity.</p>
         </footer>
 
     </div>
@@ -246,8 +296,7 @@
     <script>
         feather.replace();
 
-        // 1. SCROLL REVEAL ANIMATION
-        const observerOptions = { threshold: 0.1 };
+        // SCROLL REVEAL
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -255,68 +304,38 @@
                     observer.unobserve(entry.target);
                 }
             });
-        }, observerOptions);
+        }, { threshold: 0.15 });
         document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
-        // 2. TEXT SCRAMBLE EFFECT (Hacker Effect)
-        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        // TEXT SCRAMBLE
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#@&";
         const h1 = document.querySelector(".glitch-text");
-        
-        let iteration = 0;
-        let interval = null;
-
-        // Jalankan efek saat load
+        let iteration = 0; let interval = null;
         window.addEventListener('load', () => {
             clearInterval(interval);
             interval = setInterval(() => {
-                h1.innerText = h1.innerText
-                    .split("")
-                    .map((letter, index) => {
-                        if(index < iteration) {
-                            return h1.dataset.value[index];
-                        }
-                        return letters[Math.floor(Math.random() * 26)]
-                    })
-                    .join("");
-                
-                if(iteration >= h1.dataset.value.length){ 
-                    clearInterval(interval);
-                }
-                
+                h1.innerText = h1.innerText.split("").map((letter, index) => {
+                    if(index < iteration) return h1.dataset.value[index];
+                    return letters[Math.floor(Math.random() * letters.length)]
+                }).join("");
+                if(iteration >= h1.dataset.value.length) clearInterval(interval);
                 iteration += 1 / 3;
-            }, 30);
+            }, 35);
         });
 
-        // 3. SPOTLIGHT & TILT EFFECT (Desktop Only)
-        // Mengecek apakah device punya mouse (bukan touch)
+        // SPOTLIGHT & TILT (Desktop)
         if (window.matchMedia("(pointer: fine)").matches) {
             const cards = document.querySelectorAll(".card");
-
             document.addEventListener("mousemove", (e) => {
                 cards.forEach((card) => {
                     const rect = card.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-
-                    // Update variabel CSS untuk posisi spotlight
-                    card.style.setProperty("--mouse-x", `${x}px`);
-                    card.style.setProperty("--mouse-y", `${y}px`);
-
-                    // Hitung rotasi Tilt (Sangat halus, max 3 derajat)
-                    const centerX = rect.width / 2;
-                    const centerY = rect.height / 2;
-                    
-                    // Jarak mouse dari tengah kartu
-                    const rotateX = ((y - centerY) / centerY) * -2; // max -2deg to 2deg
-                    const rotateY = ((x - centerX) / centerX) * 2;
-
-                    // Terapkan rotasi jika mouse ada di sekitar kartu (optional: atau global)
-                    // Kita buat efeknya hanya aktif jika mouse di dalam area kartu agar rapi
+                    const x = e.clientX - rect.left; const y = e.clientY - rect.top;
+                    card.style.setProperty("--mouse-x", `${x}px`); card.style.setProperty("--mouse-y", `${y}px`);
                     if (x > 0 && x < rect.width && y > 0 && y < rect.height) {
-                         card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-                    } else {
-                         card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
-                    }
+                         const rotateX = ((y - rect.height/2) / (rect.height/2)) * -2;
+                         const rotateY = ((x - rect.width/2) / (rect.width/2)) * 2;
+                         card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.01, 1.01, 1.01)`;
+                    } else { card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`; }
                 });
             });
         }
